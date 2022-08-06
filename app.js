@@ -105,3 +105,39 @@ const questions = [
     ],
   },
 ];
+
+const populateQuestions = () => {
+  questions.forEach((question) => {
+    //TITLE BLOCK
+    const titleBlock = document.createElement("div");
+    titleBlock.id = question.id;
+    titleBlock.classList.add("title-block");
+
+    const titleHeading = document.createElement("h2");
+    titleHeading.textContent = question.text;
+    titleBlock.append(titleHeading);
+    questionDisplay.append(titleBlock);
+
+    //ANSWERS BLOCK
+    const answersBlock = document.createElement("div");
+    answersBlock.id = question.id + "-questions";
+    answersBlock.classList.add("answer-options");
+
+    question.answers.forEach((answer) => {
+      const answerBlock = document.createElement("div");
+      answerBlock.classList.add("answer-block");
+      answerBlock.addEventListener("click", handleClick);
+
+      //ANSWER IMAGE
+      const answerImage = document.createElement("img");
+    });
+
+    questionDisplay.append(answersBlock);
+  });
+};
+
+populateQuestions();
+
+const handleClick = () => {
+  console.log("clicked");
+};
