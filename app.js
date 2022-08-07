@@ -117,26 +117,23 @@ const answers = [
   {
     combination: ["Austin", "Pasta", "Modern"],
     text: "Cheddar",
-    // image: "https://images.unsplash.com/photo-1618164436241-4473940d1f5c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=230&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY1OTgzNjA5OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1618164436241-4473940d1f5c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=230&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY1OTgzNjA5OA&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300",
     alt: "Cheddar Cheese",
   },
   {
     combination: ["Portland", "Sandwich", "Mountains"],
     text: "Feta",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1559561853-08451507cbe7?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=230&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY1OTgzODgzOQ&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300",
     alt: "Feta Cheese",
   },
-  {
-    combination: ["Portland", "Sandwich", "Mountains"],
-    text: "Feta",
-    image: "",
-    alt: "Feta",
-  },
+
   {
     combination: ["New Orleans", "Hamburger", "House"],
     text: "Halloumi",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1578172397201-efaa902004a3?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=230&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY1OTgzODkwNw&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=300",
     alt: "Halloumi",
   },
 ];
@@ -184,7 +181,7 @@ const populateQuestions = () => {
 
       const answerInfo = document.createElement("p");
       const imageLink = document.createElement("a");
-      imageLink.setAttribute("href", answer.credit);
+      imageLink.setAttribute("href", answer.image);
       imageLink.textContent = answer.credit;
       const sourceLink = document.createElement("a");
       sourceLink.textContent = "Unsplash";
@@ -214,13 +211,14 @@ const handleClick = (questionId, chosenAnswer) => {
   console.log(chosenAnswers);
   console.log(unansweredQuestions);
 
-  //   disableQuestionBlock(questionId, chosenAnswer)
+  disableQuestionBlock(questionId, chosenAnswer);
   const lowestQuestionId = Math.min(...unansweredQuestions);
   location.href = "#" + lowestQuestionId;
 
   //scroll to top most unanswered question
   if (!unansweredQuestions.length) {
     //Scroll to answer div
+    location.href = "#answer";
     showAnswer();
   }
 };
@@ -234,7 +232,7 @@ const showAnswer = () => {
       chosenAnswers.includes(answer.combination[2])
     ) {
       result = answer;
-    } else {
+    } else if (!result) {
       // first answer object is default
       result = answers[0];
     }
@@ -252,4 +250,20 @@ const showAnswer = () => {
   answerBlock.append(answerTitle, answerImage);
 
   answerDisplay.append(answerBlock);
+
+  const allAnswerBlocks = document.querySelectorAll(".answer-block");
+  Array.from(allAnswerBlocks).forEach((answerBlock) =>
+    answerBlock.replaceWith(answerBlock.cloneNode(true))
+  );
+};
+
+const disableQuestionBlock = (questionId, chosenAnswer) => {
+  const currentQuestionBlock = document.getElementById(
+    questionId + "-questions"
+  );
+  Array.from(currentQuestionBlock.children).forEach((block) => {
+    if (block.children.item(1).innerText != chosenAnswer) {
+      block.style.opacity = "50%";
+    }
+  });
 };
